@@ -3,28 +3,38 @@ package Servicios
 import AccesoDatos.*
 import Dominio.*
 import Presentacion.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.WeekFields
 import java.util.Locale
 
-class ActividadService {
-    private val consola = ConsolaUI()
-    private val repo = RepoActividades()
-    private val servicioUsuario = UsuariosService(consola)
-    private val historial = ControlDeHistorial()
+class ActividadService(
+    private val consola: ConsolaUI = ConsolaUI(),
+    var repo: RepoActividades = RepoActividades(),
+    val servicioUsuario: UsuariosService = UsuariosService(consola),
+    private val historial: ControlDeHistorial = ControlDeHistorial(),
+    private val logger: Logger = LoggerFactory.getLogger(ActividadService::class.java)
+) {
 
     fun gestionarPrograma() {
-        usuariosConActividades()
-        do {
-            consola.mostrarMenu()
-            val opcion = consola.pedirOpcion("Elige una opción", 0, 6)
-            gestionarOpcion(opcion)
-        } while (opcion != 0)
+        try {
+            usuariosConActividades()
+            do {
+                consola.mostrarMenu()
+                val opcion = consola.pedirOpcion("Elige una opción", 0, 6)
+                gestionarOpcion(opcion)
+            } while (opcion != 0)
+        } catch (e: Exception) {
+            logger.error("Error inesperado al gestionar el programa: ${e.message}", e)
+        }
     }
 
-    private fun agregarSubtarea() {
+
+    fun agregarSubtarea() {
         try {
             // Listar las tareas disponibles para elegir la tarea madre
             consola.listarTareas(repo.tareas)
@@ -34,12 +44,6 @@ class ActividadService {
             val tareaMadre = repo.tareas.find { it.getIdActividad().toInt() == idTareaMadre }
 
             if (tareaMadre != null) {
-                // Verificar si ya tiene una subtarea
-                if (tareaMadre.subTarea != null) {
-                    println("¡Error! La tarea madre ya tiene una subtarea asignada.")
-                    return
-                }
-
                 // Crear la subtarea
                 val subtarea = Tarea.creaInstancia(
                     consola.pedirInfo("Descripción de la subtarea:"),
@@ -48,8 +52,10 @@ class ActividadService {
                 )
 
                 // Asignar la subtarea a la tarea madre
-                tareaMadre.subTarea = subtarea
-                repo.tareas.add(subtarea) // Guardar la subtarea en el repositorio
+                tareaMadre.agregarSubTarea(subtarea)
+
+                // Actualizar el fichero para incluir la tarea madre con sus subtareas
+                Utils.actualizarTareaEnFichero(tareaMadre)
 
                 println("¡Subtarea añadida con éxito!")
                 historial.agregarHistorial("Subtarea agregada a la tarea ${tareaMadre.getIdActividad()}")
@@ -61,21 +67,27 @@ class ActividadService {
         }
     }
 
+
     private fun usuariosConActividades() {
-        for (usuario in servicioUsuario.usuariosRepo.usuarios) {
-            for (actividad in repo.actividades) {
-                if (actividad.obtenerUsuario() == usuario.nombre && !usuario.repoActividades.actividades.contains(actividad)) {
-                    usuario.repoActividades.actividades.add(actividad)
-                    when (actividad) {
-                        is Tarea -> usuario.repoActividades.tareas.add(actividad)
-                        is Evento -> usuario.repoActividades.eventos.add(actividad)
+        try {
+            for (usuario in servicioUsuario.usuariosRepo.usuarios) {
+                for (actividad in repo.actividades) {
+                    if (actividad.obtenerUsuario() == usuario.nombre && !usuario.repoActividades.actividades.contains(actividad)) {
+                        usuario.repoActividades.actividades.add(actividad)
+                        when (actividad) {
+                            is Tarea -> usuario.repoActividades.tareas.add(actividad)
+                            is Evento -> usuario.repoActividades.eventos.add(actividad)
+                        }
                     }
                 }
             }
+            logger.trace("Usuarios asociados con actividades correctamente.")
+        } catch (e: Exception) {
+            logger.error("Error al asociar usuarios con actividades: ${e.message}", e)
         }
     }
 
-    private fun cambiarEstado(tarea: Tarea) {
+    fun cambiarEstado(tarea: Tarea) {
         val estadoNuevo = consola.pedirInfo("CAMBIE EL ESTADO DE LA TAREA: ABIERTA, EN_PROGRESO, FINALIZADA")
         val estado = EstadoTarea.getEstado(estadoNuevo)
         if (estado != null) {
@@ -107,7 +119,7 @@ class ActividadService {
         }while(opcion != 0)
     }
 
-    private fun filtrarPorEstado(){
+    fun filtrarPorEstado(){
         var opcion = -1
 
         do{
@@ -139,7 +151,7 @@ class ActividadService {
         }while(opcion != 0)
     }
 
-    private fun filtradoPorUsuarios(){
+    fun filtradoPorUsuarios(){
         var seguir = true
         do{
             var encontrado = false
@@ -169,7 +181,7 @@ class ActividadService {
             }
         }while(seguir)
     }
-    private fun filtradoPorEtiquetas(){
+    fun filtradoPorEtiquetas(){
         var opcion = -1
 
         do{
@@ -336,7 +348,8 @@ class ActividadService {
     }
 
     private fun listarActividades() {
-        consola.listarActividades(repo.actividades)
+        val actividadesUnicas = repo.actividades.distinct() // Eliminar duplicados
+        consola.listarActividades(actividadesUnicas.toMutableList())
         historial.agregarHistorial("Se listan todas las actividades")
     }
 

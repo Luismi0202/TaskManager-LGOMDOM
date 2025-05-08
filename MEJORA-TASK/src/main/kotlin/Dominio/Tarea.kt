@@ -5,10 +5,14 @@ class Tarea private constructor(
     usuario: String,
     val etiqueta: EtiquetasTareas
 ) : Actividad(descripcion, usuario) {
+
+    init{
+        contador += 1
+    }
     var estado = EstadoTarea.ABIERTA
 
-    // Una única sub-tarea asociada
-    var subTarea: Tarea? = null
+    // Lista de subtareas asociadas
+    val subTareas: MutableList<Tarea> = mutableListOf()
 
     private constructor(
         usuario: String,
@@ -18,22 +22,42 @@ class Tarea private constructor(
         descripcion: String,
         estado: String
     ) : this(usuario, descripcion, etiqueta) {
-        this.id = id
+        this.id = id + contador
         this.fechaCreacion = fechaCreacion
         this.estado = EstadoTarea.getEstado(estado)!!
     }
 
     override fun obtenerDetalle(): String {
-        val subTareaDetalle = subTarea?.obtenerDetalle() ?: "Sin subtarea"
-        return super.obtenerDetalle() + ";$estado;$etiqueta;Subtarea:[$subTareaDetalle]"
+        val subTareasDetalle = if (subTareas.isEmpty()) {
+            "Sin subtareas"
+        } else {
+            subTareas.joinToString(separator = "\n") { "    - ${it.obtenerDetalle()}" }
+        }
+        return super.obtenerDetalle() + ";$estado;$etiqueta;\nSubtareas:\n$subTareasDetalle"
     }
 
     fun actualizarEstado(estado: EstadoTarea) {
         this.estado = estado
-        subTarea?.estado = estado // Sincroniza el estado con la subtarea
+        for(tarea in subTareas) {
+            tarea.estado = estado
+        }
+    }
+
+    fun agregarSubTarea(subTarea: Tarea) {
+        if (!subTareas.contains(subTarea)) { // Evitar duplicados en la lista de subtareas
+            // Validar que las subtareas no puedan tener más subtareas
+            if (subTarea.subTareas.isNotEmpty()) {
+                throw IllegalArgumentException("Una subtarea no puede tener más subtareas.")
+            }
+            subTareas.add(subTarea)
+        } else {
+            println("La subtarea ya existe, no se añadirá de nuevo.")
+        }
     }
 
     companion object {
+        var contador = 0
+
         fun creaInstancia(descripcion: String, usuario: String, etiqueta: EtiquetasTareas): Tarea {
             return Tarea(descripcion, usuario, etiqueta)
         }

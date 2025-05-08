@@ -91,11 +91,15 @@ class ConsolaUI: Consola {
     }
 
     fun listarTareas(tareas: MutableList<Tarea>) {
+        var contador = -1
         for (tarea in tareas) {
+            contador = 0
             println(tarea.obtenerDetalle())
-            tarea.subTarea?.let {
-                println("  Subtarea:")
-                println("    - ${it.obtenerDesc()}${it.obtenerUsuario()}${it.estado}")
+
+            for(subtarea in tarea.subTareas){
+                contador += 1
+                println("->  SUBTAREA$contador")
+                println("->        ${subtarea.obtenerDetalle()} ESTADO: ${subtarea.estado}")
             }
         }
     }
@@ -164,6 +168,10 @@ class ConsolaUI: Consola {
         return opcion
     }
 
+    override fun mostrarMensaje(s: String) {
+        println(s)
+    }
+
     fun preguntarSeguir(): Boolean {
         val opciones = mapOf("S" to true, "N" to false)
         var seguir: Boolean? = null
@@ -184,25 +192,26 @@ class ConsolaUI: Consola {
 
 
     override fun listarActividades(actividades: MutableList<Actividad>) {
-        for (actividad in actividades) {
-            when (actividad) {
-                is Tarea -> {
-                    println("ID: ${actividad.getIdActividad()}, Usuario: ${actividad.obtenerUsuario()}, Descripción: ${actividad.obtenerDesc()}")
+        val mostradas = mutableSetOf<String>() // Para evitar duplicados en la salida
 
-                    // Comprobar si tiene una subtarea
-                    if (actividad.subTarea == null) {
-                        println("  -> No hay subtarea asociada.")
-                    } else {
-                        // Mostrar los detalles de la subtarea
-                        val subTarea = actividad.subTarea!!
-                        println("  -> Subtarea:")
-                        println("      - Descripción: ${subTarea.obtenerDesc()}")
-                        println("      - Usuario: ${subTarea.obtenerUsuario()}")
-                        println("      - Etiqueta: ${subTarea.etiqueta}")
+        for (actividad in actividades) {
+            val detalle = actividad.obtenerDetalle()
+            if (detalle !in mostradas) {
+                println(detalle)
+                mostradas.add(detalle) // Registrar como mostrada
+
+                when (actividad) {
+                    is Tarea -> {
+                        if (actividad.subTareas.isNotEmpty()) {
+                            println("Subtareas:")
+                            actividad.subTareas.forEach { subtarea ->
+                                println("    - ${subtarea.obtenerDetalle()}")
+                            }
+                        } else {
+                            println("Subtareas:\n    Sin subtareas")
+                        }
                     }
-                }
-                is Evento-> {
-                    println(actividad.obtenerDetalle())
+                    is Evento -> println("Sin subtareas (Evento).")
                 }
             }
         }

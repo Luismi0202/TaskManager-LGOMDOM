@@ -6,6 +6,7 @@ import Dominio.Evento
 import Dominio.Tarea
 import Servicios.ControlDeHistorial
 import java.io.File
+import java.nio.file.Paths
 
 class RepoActividades(
     override val actividades: MutableList<Actividad> = mutableListOf(),
@@ -74,6 +75,7 @@ class RepoActividades(
     }
 
     companion object {
-        const val RUTA_FICHERO_ACTIVIDADES = "MEJORA-TASK/src/main/kotlin/Datos/Actividades.txt" // Usar const para constantes
+        val ruta_relativa = "MEJORA-TASK/src/main/kotlin/Datos/Actividades.txt"
+        val RUTA_FICHERO_ACTIVIDADES = Paths.get(ruta_relativa).toAbsolutePath().toString() // Usar const para constantes
     }
 }

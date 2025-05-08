@@ -1,0 +1,3 @@
+juan;5;jfdsg;09-05-2025;ABIERTA;DOCUMENTACION;
+Subtareas:
+Sin subtareas

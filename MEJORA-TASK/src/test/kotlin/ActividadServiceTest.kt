@@ -17,7 +17,12 @@ class ActividadServiceTest : DescribeSpec({
     val mockUsuariosService = mockk<UsuariosService>(relaxed = true)
     val actividadService = ActividadService(mockConsola, mockRepo, mockUsuariosService, mockHistorial)
 
+    // PRUEBAS DEL METODO DE AGREGAR SUBTAREA RESULTADO:(FUNCIONAN CORRECTAMENTE)
     describe("agregarSubtarea") {
+        beforeEach {
+            clearMocks(mockConsola, mockRepo, mockHistorial) // Limpia los mocks antes de cada prueba
+        }
+
         it("debería agregar una subtarea exitosamente") {
             val tareaMadre = mockk<Tarea>(relaxed = true)
             every { mockRepo.tareas } returns mutableListOf(tareaMadre)
@@ -41,7 +46,13 @@ class ActividadServiceTest : DescribeSpec({
         }
     }
 
+
+    //PRUEBAS DEL METODO DE CAMBIAR ESTADO, RESULTADO: FUNCIONAN CORRECTAMENTE
     describe("cambiarEstado") {
+        beforeEach {
+            clearMocks(mockConsola, mockHistorial) // Limpia los mocks antes de cada prueba
+        }
+
         it("debería cambiar el estado de una tarea exitosamente") {
             val tarea = mockk<Tarea>(relaxed = true)
             every { mockConsola.pedirInfo(any()) } returns "EN_PROGRESO"
@@ -49,7 +60,7 @@ class ActividadServiceTest : DescribeSpec({
             actividadService.cambiarEstado(tarea)
 
             verify { tarea.actualizarEstado(EstadoTarea.EN_PROGRESO) }
-            verify { mockHistorial.agregarHistorial(any()) }
+            verify { mockHistorial.agregarHistorial("Estado de la tarea cambiado a EN_PROGRESO") }
         }
 
         it("debería fallar si el estado es inválido") {
@@ -59,20 +70,25 @@ class ActividadServiceTest : DescribeSpec({
             actividadService.cambiarEstado(tarea)
 
             verify(exactly = 0) { tarea.actualizarEstado(any()) }
+            verify(exactly = 0) { mockHistorial.agregarHistorial(any()) }
         }
     }
 
 
+    //PRUEBAS DEL METODO FILTRAR POR ESTADO (FUNCIONAN CORRECTAMENTE)
     describe("filtrarPorEstado") {
+        beforeEach {
+            clearMocks(mockConsola, mockRepo, mockHistorial) // Limpia los mocks antes de cada prueba
+        }
         it("debería filtrar tareas con estado ABIERTA y salir del bucle") {
             val tareaAbierta = mockk<Tarea>(relaxed = true)
             every { tareaAbierta.estado } returns EstadoTarea.ABIERTA
-            every { mockRepo.tareas } returns listOf(tareaAbierta) as MutableList<Tarea>
+            every { mockRepo.tareas } returns mutableListOf(tareaAbierta)
             every { mockConsola.pedirOpcion(any(), any(), any()) } returnsMany listOf(1, 0) // Devuelve 1 y luego 0 para salir del bucle
 
             actividadService.filtrarPorEstado()
 
-            verify { mockConsola.listarTareas(listOf(tareaAbierta) as MutableList<Tarea>) }
+            verify { mockConsola.listarTareas(mutableListOf(tareaAbierta)) }
         }
 
         it("debería mostrar mensaje si no hay tareas con el estado solicitado y salir del bucle") {
@@ -85,7 +101,12 @@ class ActividadServiceTest : DescribeSpec({
         }
     }
 
+    // PRUEBAS DEL METODO ANADIRACTIVIDAD RESULTADO: FUNCIONAN CORRECTAMENTE
     describe("anadirActividad") {
+        beforeEach {
+            clearMocks(mockConsola, mockRepo, mockHistorial) //ESTO LO HAGO PARA LIMPIAR LOS MOCKS
+        }
+
         it("debería añadir una actividad exitosamente") {
             val tarea = mockk<Tarea>(relaxed = true)
             every { mockConsola.pedirOpcion(any(), any(), any()) } returns 1
@@ -98,12 +119,17 @@ class ActividadServiceTest : DescribeSpec({
         }
 
         it("debería fallar si los datos de la actividad son inválidos") {
+            // Configurar el mock para devolver 1 como opción y null como resultado de crearActividad
             every { mockConsola.pedirOpcion(any(), any(), any()) } returns 1
             every { mockConsola.crearActividad(any(), any(), any()) } returns null
 
+            // Ejecutar el método
             actividadService.anadirActividad()
 
+            // Verificar que no se llama a aniadirActividad en el repositorio
             verify(exactly = 0) { mockRepo.aniadirActividad(any()) }
+
+            // Verificar que se registra el error en el historial
             verify { mockHistorial.agregarHistorial("Error al crear actividad") }
         }
     }

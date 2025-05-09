@@ -1,10 +1,12 @@
 Para esta actividad, elegiré el servicio `ActividadService` de tu proyecto. Este servicio gestiona diversas operaciones relacionadas con actividades, como agregar subtareas, cambiar el estado de tareas y filtrar actividades. A continuación, estructuraré los pasos para cumplir con los objetivos de la actividad.
 
 ### Plan para Diseñar y Ejecutar Pruebas Unitarias para `ActividadService`
+
 1. **Selección del Servicio**
-   - Servicio elegido: `ActividadService`. (Hemos elegido este porque es el más completo además de que al final el programa va de gestionar esas actividades así que que mejor que usar el servicio de esas actividades)
+   - Servicio elegido: `ActividadService`. (Hemos elegido este porque es el más completo además de que al final el programa va de gestionar esas actividades así que que mejor que usar el servicio de esas actividades). Además, el ejercicio pide que se use el servicio que tenga el repo inyectado y este es el único que tiene un repo inyectado en él.
 
 2. **Identificación de Métodos Públicos**
+
 Los métodos públicos que están en el servicio ActividadService (que es el que gestiona todo los métodos relacionados con las clases Tarea y Eventos) son...
      - `gestionarPrograma()`
      - `cambiarEstado(tarea: Tarea)`

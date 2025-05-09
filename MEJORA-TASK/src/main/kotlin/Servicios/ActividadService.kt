@@ -332,7 +332,7 @@ class ActividadService(
         }
     }
 
-    private fun anadirActividad() {
+    fun anadirActividad() {
         val opcion = consola.pedirOpcion("¿Qué quieres crear?\n1) Tarea\n2) Evento\n0) Cancelar", 0, 2)
         if (opcion == 0) return
 

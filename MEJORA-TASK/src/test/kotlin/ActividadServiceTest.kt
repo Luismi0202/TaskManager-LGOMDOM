@@ -63,21 +63,22 @@ class ActividadServiceTest : DescribeSpec({
         }
     }
 
+
     describe("filtrarPorEstado") {
-        it("debería filtrar tareas con estado ABIERTA") {
+        it("debería filtrar tareas con estado ABIERTA y salir del bucle") {
             val tareaAbierta = mockk<Tarea>(relaxed = true)
             every { tareaAbierta.estado } returns EstadoTarea.ABIERTA
             every { mockRepo.tareas } returns listOf(tareaAbierta) as MutableList<Tarea>
-            every { mockConsola.pedirOpcion(any(), any(), any()) } returns 1
+            every { mockConsola.pedirOpcion(any(), any(), any()) } returnsMany listOf(1, 0) // Devuelve 1 y luego 0 para salir del bucle
 
             actividadService.filtrarPorEstado()
 
             verify { mockConsola.listarTareas(listOf(tareaAbierta) as MutableList<Tarea>) }
         }
 
-        it("debería mostrar mensaje si no hay tareas con el estado solicitado") {
+        it("debería mostrar mensaje si no hay tareas con el estado solicitado y salir del bucle") {
             every { mockRepo.tareas } returns mutableListOf()
-            every { mockConsola.pedirOpcion(any(), any(), any()) } returns 1
+            every { mockConsola.pedirOpcion(any(), any(), any()) } returnsMany listOf(1, 0) // Devuelve 1 y luego 0 para salir del bucle
 
             actividadService.filtrarPorEstado()
 

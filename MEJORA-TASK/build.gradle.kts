@@ -32,6 +32,15 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+sourceSets {
+    test {
+        java {
+            setSrcDirs(listOf("src/test/kotlin"))
+        }
+    }
+}
+
 kotlin {
     jvmToolchain(21)
 }

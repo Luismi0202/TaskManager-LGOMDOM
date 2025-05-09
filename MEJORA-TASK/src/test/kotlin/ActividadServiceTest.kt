@@ -7,7 +7,6 @@ import Servicios.ActividadService
 import Servicios.ControlDeHistorial
 import Servicios.UsuariosService
 import io.kotest.core.spec.style.DescribeSpec
-import io.kotest.matchers.shouldBe
 import io.mockk.*
 
 class ActividadServiceTest : DescribeSpec({
@@ -21,7 +20,7 @@ class ActividadServiceTest : DescribeSpec({
     describe("agregarSubtarea") {
         it("debería agregar una subtarea exitosamente") {
             val tareaMadre = mockk<Tarea>(relaxed = true)
-            every { mockRepo.tareas } returns listOf(tareaMadre) as MutableList<Tarea>
+            every { mockRepo.tareas } returns mutableListOf(tareaMadre)
             every { mockConsola.pedirInfo(any()) } returns "1" andThen "Subtarea de prueba" andThen "Usuario"
             every { mockConsola.pedirEtiqueta() } returns EtiquetasTareas.URGENTE
             every { tareaMadre.getIdActividad() } returns "1"

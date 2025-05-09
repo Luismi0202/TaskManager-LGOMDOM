@@ -20,6 +20,10 @@ open class ControlDeHistorial {
     }
 
     companion object {
-        var RUTA_HISTORIAL = "MEJORA-TASK/src/main/kotlin/Datos/Historial.txt"
+        var RUTA_HISTORIAL =
+            "${System.getProperty("user.dir")}/src/main/kotlin/Datos/Historial.txt".replace(
+                "/",
+                File.separator
+            )
     }
 }

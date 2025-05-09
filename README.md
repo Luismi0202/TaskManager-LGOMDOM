@@ -7,18 +7,21 @@ Para esta actividad, elegiré el servicio `ActividadService` de tu proyecto. Est
 
 2. **Identificación de Métodos Públicos**
 
+Como realmente no hacía falta ningún método público porque al final lo que hago es hacer un companion object que instancie la función de arrancar el programa en el servicio y ese método del companion es lo que uso en el main así que todo trabaja en el servicio, pues realmente he tenido que cambiar un par de métodos a públicos (otros ya estaban porque no los puse privados como tal pero como no se usan deberían de serlos todos), al final, he elegido una variedad de métodos que algunos funcionas iguales que otros (como los de filtrado), así que realmente haciendo estas pruebas unitarias con estos métodos, es como haberlos hechos con todos. Se tienen que hacer con los métodos públicos porque si no entonces la clase del test no puede probar esos métodos fuera. Si tuvieramos que probar un método que es privado por narices, lo suyo sería cambiarlo un momentito a público. De hecho, se podría volver a dejar en privado todos los métodos que he seleccionado pero no lo voy a hacer por cuestiones obvias (que quiero que el testeo funcione correctamente cuando se ejecute)
+
 Los métodos públicos que están en el servicio ActividadService (que es el que gestiona todo los métodos relacionados con las clases Tarea y Eventos) son...
-     - `gestionarPrograma()`
-     - `cambiarEstado(tarea: Tarea)`
-     - `agregarSubtarea()`
-     - `usuariosConActividades()`
-     - `filtrarPorEstado()`
-     - `filtradoPorEtiquetas()`
-     - `filtradoPorUsuarios()`
+
+-AgregarSubtarea()
+
+-CambiarEstado()
+
+-filtrarPorEstado()
+
+-anadirActividad()
 
 3. **Diseño de Casos de Prueba**
 
-En este apartado, teníamos que incluir una tabla con los distintos casos de pruebas de cada método y como se supone que deberían de actuar (esto se tiene en cuenta para que si da algún fallo, el programador sepa que debería de hacer esa función y entonces la podría identificar en la tabla y saber que se supone que debía de hacer ese método en lugar de dar un fallo. Sirve bastante para poder entender poco a poco lo que hace cada método ya que como realmente antes estábamos trabajando en grupo, pues me ha servido bastante para ir mirando las lógicas que hemos ido teniendo ya que no todos los métodos los he hecho yo solo, si no que nos hemos ido comunicando. En la tabla, se ven los métodos, con el caso de prueba (que es con el que se prueba el método para ver si funciona), el estado inicial del mock (que es una forma de simular el comportamiento de un objeto para hacerle como una verificación doble y ver que funciona de manera correcta), a acción que hace ese métodos y el resultado que se espera al ejecutar el método.
+Ahora que tengo los métodos públicos identificados, lo que nos pide el ejercicio es hacer una tabla con los métodos y hacer 2 casos de pruebas y más o menos explicarlos poco a poco en esa tabla. Esto se hace con la idea de luego hacer los kotest. En la tabla, como bien se puede apreciar, hay 2 pruebas por métodos, que es como lo pide la tarea, uno tiene que ser de un caso de prueba donde el método haga lo suyo de forma correcta y otro tiene que ser con un fallo. Cuando realice la tabla y me puse manos a la obra con hacer los testing, me encontré con un par de fallos a la hora de hacer estos segundos testeos (o incluso los primeros) y es que muchas partes del código no controlaban errores o les faltaba por llamar a algunas clases como el historial. La tabla que se ha tenido en cuenta para hacer los testing es la siguiente (esta tabla la hice primero en un excel y luego le pedí a un modelo de lenguaje que me la pasará a markdown, mas que nada porque hacer tablas en markdown me cuesta un poco, imagino que habrá páginas pero lo suelo hacer asi):
 
 | Método                   | Caso de prueba                                | Estado inicial del mock                                                                 | Acción                                  | Resultado esperado                                                               |
 |--------------------------|-----------------------------------------------|---------------------------------------------------------------------------------------|-----------------------------------------|----------------------------------------------------------------------------------|
@@ -29,8 +32,25 @@ En este apartado, teníamos que incluir una tabla con los distintos casos de pru
 | filtrarPorEstado(...)    | Tareas con estado ABIERTA                    | mockRepo devuelve tareas con diferentes estados                                       | Llamar filtrarPorEstado(...)            | Se muestran solo tareas con estado ABIERTA                                       |
 | filtrarPorEstado(...)    | Sin tareas en el repositorio                 | mockRepo devuelve una lista vacía                                                    | Llamar filtrarPorEstado(...)            | Mensaje indicando que no hay tareas                                              |
 | anadirActividad(...)     | Datos válidos                                | mockConsola devuelve datos válidos                                                   | Llamar anadirActividad(...)             | Actividad añadida con éxito, historial actualizado                               |
-| anadirActividad(...)     | Datos inválidos                              | mockConsola devuelve datos nulos o vacíos                                            | Llamar anadirActividad(...)             | Mensaje de error mostrado, historial actualizado con mensaje de error            |
-| listarActividades(...)   | Repositorio con actividades                  | mockRepo devuelve una lista de actividades                                           | Llamar listarActividades(...)           | Actividades listadas, historial actualizado                                      |
-| listarActividades(...)   | Repositorio vacío                            | mockRepo devuelve una lista vacía                                                    | Llamar listarActividades(...)           | Mensaje indicando que no hay actividades                                         |
-| filtrarPorEtiquetas(...) | Tareas con etiqueta URGENTE                  | mockRepo devuelve tareas con diferentes etiquetas                                     | Llamar filtrarPorEtiquetas(...)         | Se muestran solo tareas con etiqueta URGENTE                                     |
-| filtrarPorEtiquetas(...) | Sin tareas con etiquetas                     | mockRepo devuelve una lista vacía                                                    | Llamar filtrarPorEtiquetas(...)         | Mensaje indicando que no hay tareas                                              |
+| anadirActividad(...)     | Datos inválidos                              | mockConsola devuelve datos nulos o vacíos                                            | Llamar anadirActividad(...)             | Mensaje de error mostrado, historial actualizado con mensaje de error            |                                          |
+
+**4.Implementación de los tests**
+
+Primero que nada, hay que tener en cuenta que hay que crearse un módulo dentro de nuestro directorio de trabajo gradle (en el mismo src donde esta el main) que se llame "tests". Este realmente se crea casi automático ya que cuando le damos a crear un directorio dentro de src el propio IDE nos dice de crear "tests/kotlin", creandote así la estructura del modulo test con la carpeta de recursos tests kotlin. Ya eb esa carpeta se puede organizar todas las clases o archivos tests que queramos (yo al final uso una clase porque además se te pide que hagas un DescribeSpec).
+
+Los describe spec sirven para agrupar pruebas que tienen un método en comun, así por ejemplo podemos hacer un Describe("pruebas de agregar subtarea") y luego con el it especificamos cada prueba ej: it("debería de crear una nueva tarea)"{y aqui iria el codigo de la prueba}
+
+TODAS LAS PRUEBAS HECHAS CON DESCRIBESPEC (fui anotando con comentarios para ir sabiendo cuales tests iban fallando e ir cambiando esos hasta que funcionarán porque quería que fueran todas las pruebas):
+
+
+**5. EJECUCIÓN Y REPORTE DE RESULTADOS**
+
+Me instalé un plugin llamado kotest que hace que las pruebas las puedas realizar desde la propia clase sin necesidad de ir a terminal y poner ./gradlew test, si no que tan solo le damos al botón de ejecutar y podemos incluso ir prueba a prueba comprobando (lo cual me ha venido perfecto para ir controlando aquellas pruebas que daban fallo). Vamos, al final es como ese triangulito verde que nos sale en el main para que podamos ejecutar el programa sin tener que hacerlo en terminal
+
+[Foto de lo que me refiero]()
+
+Cuando probamos las pruebas todas a la vez, vemos que todas se ejecutan correctamente (fui probando poco a poco hasta poder dar con todas correctas pero tuve muchos fallos por el camino como los que mencioné anteriormente por no controlar errores, hacer mal castings de las listas o por no llamar a todas las clases que hacían falta en el método a la hora de hacer la prueba).
+
+[Foto de las pruebas ejecutadas]()
+
+Como vemos, pasa 8/8 de los tests (es decir, todos) y tarda 623 milisegundos en hacer todas las pruebas.

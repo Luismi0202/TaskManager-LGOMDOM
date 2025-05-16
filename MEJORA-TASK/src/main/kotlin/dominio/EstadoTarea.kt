@@ -13,10 +13,10 @@ enum class EstadoTarea(e:String) {
     companion object{
         fun getEstado(estado:String): EstadoTarea?{
             return when(estado.uppercase()){
-                "ABIERTA"-> EstadoTarea.ABIERTA
-                "FINALIZADA"-> EstadoTarea.FINALIZADA
-                "EN_PROGRESO"-> EstadoTarea.EN_PROGRESO
-                "EN PROGRESO"-> EstadoTarea.EN_PROGRESO
+                "ABIERTA"-> ABIERTA
+                "FINALIZADA"-> FINALIZADA
+                "EN_PROGRESO"-> EN_PROGRESO
+                "EN PROGRESO"-> EN_PROGRESO
                 else -> null
             }
         }

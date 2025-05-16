@@ -20,6 +20,6 @@ Una vez hecho esto, se nos crea una carpeta en el build llamada "dokka" donde es
 
 ![ESTRUCTURA CREADA](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/4.4.1-LGOMDOM/IMAGENES/ESTRUCTURA_CREADA.png)
 
-La siguiente captura que voy a poner muestra tanto un fragmento de nuestro código como ese mismo fragmento reflejado en la página, esto es para que quede claro que la documentación se ha hecho correctamente. De todas formas, gracias a lo que aprendí en digitalización, crearé una github page en este mismo repo con la carpeta correspondiente y lo dejare enlazado [AQUI]()
+La siguiente captura que voy a poner muestra tanto un fragmento de nuestro código como ese mismo fragmento reflejado en la página, esto es para que quede claro que la documentación se ha hecho correctamente. De todas formas, gracias a lo que aprendí en digitalización, crearé una github page en este mismo repo con la carpeta correspondiente y lo dejare enlazado [AQUI](https://luismi0202.github.io/TaskManager-LGOMDOM/)
 
 ![IMAGEN DEMOSTRACIÓN](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/4.4.1-LGOMDOM/IMAGENES/MUESTRA_PAGINA.png)

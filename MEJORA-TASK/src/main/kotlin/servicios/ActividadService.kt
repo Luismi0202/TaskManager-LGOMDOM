@@ -1,9 +1,10 @@
 package servicios
 
-import accesodatos.*
+
+import accesodatos.RepoActividades
 import dominio.*
-import presentacion.*
 import org.slf4j.LoggerFactory
+import presentacion.ConsolaUI
 
 import java.time.DayOfWeek
 import java.time.LocalDate

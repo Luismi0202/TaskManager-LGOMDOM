@@ -85,5 +85,18 @@ ENLACE AL COMMIT DE ERROR 4:
 5. **[WildcardImport]**  
 _Ejemplo:_ `accesodatos.* is a wildcard import. Replace it with fully qualified imports.`  
 **Descripción detallada:**  
-Usar imports con comodines (`*`) importa todas las clases de un paquete, lo que puede provocar conflictos de nombres si diferentes paquetes contienen clases con el mismo nombre. Además, dificulta saber qué clases se están utilizando realmente en el archivo, reduciendo la claridad y el control sobre las dependencias. Es mejor importar solo las clases necesarias de forma explícita.
+Usar imports con asteriscos (`*`) importa todas las clases de un paquete, lo que puede provocar conflictos de nombres si diferentes paquetes contienen clases con el mismo nombre. Además, dificulta saber qué clases se están utilizando realmente en el archivo, reduciendo la claridad y el control sobre las dependencias. Es mejor importar solo las clases necesarias de forma explícita.
 **SOLUCIÓN:**
+Este es otro error bastante tonto ya que lo único que hay que hacer es no importar todas las clases del paquete si no las vamos a utilizar. Voy a cambiar el import de todas las clases de acceso a datos y voy a importar únicamente las que necesite realmente el programa. Si el IDE nos pone automáticamente que importa todas las clases de un paquete eso quiere decir que si usa todas. De hecho, al cambiar estos importes, el ide me ha dicho que en ActividadService usaba todas las de dominio y es normal ya que es el que gestiona principalmente el programa
+
+IMPORTS ANTES:
+[IMPORTS ANTES]()
+
+COMO HACERLE LOS IMPORTS UNO A UNA DE FORMA SENCILLA GRACIAS AL IDE:
+[COMO HACER IMPORTS DE FORMA SENCILLA]()
+
+IMPORTS DESPUES:
+[IMPORTS DESPUES]()
+
+ENLACE AL COMMIT DE ERROR 5:
+[ENLACE AL COMMIT]()

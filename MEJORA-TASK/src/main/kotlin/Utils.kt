@@ -85,7 +85,7 @@ object Utils {
                         return null
                     }
 
-                    Evento.creaInstancia(usuario, id, descripcion, fechaCreacion, fecha, ubicacion)
+                    Evento.creaInstancia(EventoParams(usuario, id, descripcion, fechaCreacion, fecha, ubicacion))
                 }
             } else {
                 println("Error: Formato inválido en la actividad serializada: $serializado")

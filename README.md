@@ -1,109 +1,67 @@
+# DESARROLLO DE LA ACTIVIDAD:
 
-# CORRECCIÓN DE ERRORES
+Primero, la actividad pedía seleccionar entre uno de dos analizadores de códigos, o detekt o ktlint,
+yo he usado detekt que además, te hace escribir mucho menos en el gradle ya que le puedes poner un parámetro que te pone una configuración por defecto. Para integrarlo en el proyecto, como estoy usando gradle, al final solo hay que poner el plugin necesario (que en este caso sería detekt) que además, está en la página oficial de detekt que también está enlazada en la moodle con el ejercicio. Luego de cargar el gradle con este plugin, se debe de poner también la configuración del detekt dentro del archivo de configuración del gradle. La configuración es bastante fácil de poner y lo único que hay que hacer es poner detekt y abrir dos llaves y poner dentro de ahí toda la configuración necesaria.
 
-## Error 1: Problema en las rutas de los ficheros
+[IMAGEN DEL GRADLE]()
 
-- Este error lo soluciona: Luismi
+Después de esto hay que abrir el terminal desde la carpeta raiz de nuestro proyecto gradle y ahí tenemos que ejecutar ./gradlew detekt para que nos ejecute el analizador de código, después de esto, nos enseñará por terminal un listado con todos los errores que tiene nuestro código, como la actividad pide hablar de al menos 5, voy a detenerme a detallar 5 de estos errores que me ha dado a mi el comando.
 
-Al hacerle un clone a este repositorio para corregirle los errores, me encontré con un problema gordo, y es que las rutas de los ficheros estaban fallandome, me di cuenta de esto al ejecutar el programa de nuevo. Para darme cuenta de que era esto lo que me fallaba, lo que hice fue crearme una clase de logger y ponerlo en la clase de ActividadService ya que es la que gestiona todo el programa, entonces para manejar los errores en el logger la verdad es que es muchísimo más cómodo usarlo ahí.
+[IMAGEN TESTEO]()
 
-![CAPTURA DE LA CLASE LOGGER](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR1/Screenshot_2.png)
+1. **[NestedBlockDepth]**  
+_Ejemplo:_ `Function cargarActividades is nested too deeply.`  
+**Descripción detallada:**  
+Este error indica que una función contiene demasiados niveles de anidamiento (por ejemplo, varios if, for, while, try-catch uno dentro de otro). Un código muy anidado es difícil de leer, entender y mantener, ya que obliga a seguir la lógica saltando entre muchos bloques internos. Además, dificulta la reutilización y las pruebas.
+**SOLUCIÓN:**
+Como tenemos un tochaco de código donde se está procesando una línea y además de procesarla estoy también cargando la información de la actividad, puedo separar en funciones más pequeñas para además seguir los principios de independencia solid y hacer una programación mucho más limpia y pequeñita además de que se podría usar esa función para otros casos. Esta programación es como más nos recomienda nuestro profesor que hagamos pero aveces no le hago caso y pasan estas cosas si es que...
 
-Como se ve en la imagen, este logger lo meti en una variable en el control de historial, luego en actividadService lo que fui haciendo es ir dando errores en el logger o diciendo si ha salido bien, para que si da un error, te lo muestre en la terminal.
+FUNCIÓN ANTES:
+[FUNCION 1 ANTES]()
 
-![CAPTURA DE LA CLASE ACTIVIDAD SERVICE](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR1/Screenshot_3.png)
+FUNCIÓN DESPUÉS:
+[FUNCION 1 DESPUES]()
 
-Ahora, al ejecutar, me dio el siguiente fallo gracias al logger que le fui pusiendo en cada uno de los métodos:
+ENLACE AL COMMIT (PD: ESTE COMMIT COMPARTE LOS 2 PRIMEROS ERRORES PORQUE SE ME OLVIDÓ HACER UN COMMIT ESPECÍFICO POR CAMBIO):
+[ENLACE AL COMMIT]()
+Como se ve en las imágenes, he creado una función de procesar la línea y cargaractividad la llamará para procesar cada linea deserializada en el repo de actividades.
 
-![CAPTURA DEL ERROR 1](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR1/Screenshot_4.png)
+2. **[LongParameterList]**  
+_Ejemplo:_ `The function creaInstancia(...) has too many parameters.`  
+**Descripción detallada:**  
+Cuando una función recibe muchos parámetros, suele ser señal de que está asumiendo demasiadas responsabilidades o que los datos no están bien agrupados. Esto complica el uso de la función, aumenta la probabilidad de errores al llamar y dificulta su mantenimiento.
+**SOLUCIÓN:**
+Crear una data class para los parámetros de evento y así estaríamos poniendo esos 6 parámetros en una clase y solo tendríamos que decirle a esta función de crearInstancia que lo que le pasamos será esa dataclass y ya luego pues cogerá cada propiedad e instanciará una clase con ello. Esta función es usada en más partes del código así que habrá que cambiar de manera que en vez de pasarle 6 cadenas de string, se almacenen en la data class evento instanciandola.
 
-Para solucionarlo, me puse manos a la obra y busqué el error através de dos puntos de rupturas:
+DATA CLASS:
+[DATA CLASS]()
 
-![RUPTURA INICIAL](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR1/RUPTURA_INICIAL1.png)
+FUNCIÓN ANTES:
+[FUNCION ANTES]()
 
-![RUPTURA FINAL](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR1/RUPTURA_FINAL1.png)
+FUNCIÓN DESPUÉS:
+[FUNCION DESPUES]()
 
-Haciendo el debug, me fijé que al iniciar el programa, me decían que los ficheros no existían, ya no solo era el fichero de historial, eran todos los que me daban fallo, el error debía de tratarse en la especificación de la ruta más que otra cosa, ya que las variables se asignaban de forma correcta
+CAMBIO EN PARTES DEL CÓDIGO:
+[CAMBIO EN PARTES DEL CÓDIGO]()
 
-![DEBUG1](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR1/DEBUG1.png)
+ENLACE AL COMMIT (PD: ESTE COMMIT COMPARTE LOS 2 PRIMEROS ERRORES PORQUE SE ME OLVIDÓ HACER UN COMMIT ESPECÍFICO POR CAMBIO):
+[ENLACE AL COMMIT]()
 
-Me fijé entonces en que el error residía en que empezaba la ruta en src/ pero como se ejecutaba desde fuera del módulo, tenía también que especificarle el nombre del módulo, al cambiarlo me fue de forma correcta, para probarlo hice que me mostrará el historial y como se ve en la imagen, el logger me muestra también que se ha ejecutado sin problema esta vez.
+3. **[TooGenericExceptionCaught]**  
+_Ejemplo:_ `The caught exception is too generic. Prefer catching specific exceptions...`  
+**Descripción detallada:**  
+Capturar excepciones genéricas como `Exception` o `Throwable` puede ocultar errores inesperados y hacer que el código ignore problemas graves o difíciles de detectar. Además, dificulta el diagnóstico de fallos, ya que se pierde información sobre el tipo de error real. Es mejor capturar solo las excepciones que realmente se esperan y pueden manejarse de forma segura.
+**SOLUCIÓN:**
 
-![SOLUCIÓN1](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR1/MUESTRA_SOLUCION1.png)
+4. **[PackageNaming]**  
+_Ejemplo:_ `Package name should match the pattern: [a-z]+(.[a-z][A-Za-z0-9])`  
+**Descripción detallada:**  
+Los nombres de los paquetes en Kotlin deben estar en minúsculas y seguir un formato específico (por ejemplo, `com.ejemplo.proyecto`). No seguir esta convención puede causar problemas de compatibilidad, dificultar la búsqueda de clases y afectar la organización del proyecto. Además, algunos sistemas de archivos pueden ser sensibles a mayúsculas/minúsculas, lo que puede provocar errores al compilar o ejecutar el proyecto en diferentes entornos.
+**SOLUCIÓN:**
 
-## Error 2 : Problema al crear subtareas
-
-- Este error lo soluciona: Pablo
-
-Al hacer el programa, el ejercicio pedía que una de las mejoras fuera crear una lista de tareas de una sola capa de profundidad, pero con lo de la capa de profundidad había entendido que solo se pudiera crear una tarea y claro, me estaba dando muchos problemas eso, porque no le podía asignar varias subtareas a una tarea. Como queríamos solucionar el error con las herramientas de depuración, cree un punto de ruptura que empezara desde la clase tarea y llevará hasta esa variable donde se almacenaba la tarea anteriormente. Vimos que el problema estaba en que teniamos una variable que era subTarea = Tarea? cuando tendría que ser una variable llamada subtareas que fuera una lista de tareas, lo cambiamos.
-
-![CAMBIO VARIABLE](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR2/MUESTRA_ERROR2.png)
-
-Al cambiarlo, ahora teníamos un problema, y es que no podíamos ejecutar ya que teníamos que cambiar muchas cosas en el programa que usaba la variable subTarea en lugar de esa lista que le estabamos dando
-
-![NuevosErrores](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR2/ERROR_SUBTAREA.png)
-
-Para ello, tuvimos que cambiar bastantes métodos para que cada vez que cogieran una tarea, a esta tarea se le cogiera esa lista y se le hiciera un for mostrando los detalles de cada una de sus subtareas.
-
-![SolucionError](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR2/SOLUCION_ERROR.png)
-
-## Error 3 : Identificadores únicos reales
-
-- Este error lo soluciona: Samuel
-
-Al seguir los pasos del ejercicio, nos dimos cuenta de que era imposible poder seleccionar una tarea por el id para poder agregarle a esta una subtarea ya que al crearse los id's con fechas y al las tareas crearse siempre con la fecha actual, siempre iban a tener el mismo id. Planteamos dos cosas sobre la mesa, la primera era hacer que solo se pudiera crear una tarea al día y añadirle a esta todo como subtareas, y la otra, fue la que hemos acabado ejecutando y la que tiene lógica, que es hacer que los id's se generen distintos para la clase tarea y la clase eventos, es decir, serán unicos para ambos, pero en el caso de las tareas, se aumenta siempre en 1 el id en vez de asociarselo a la fecha, ya que estas si las tenemos que seleccionar.
-
-Nos pusimos manos a la obra y pusimos los puntos de ruptura y depuramos, al no ser error de ejecución, el logger aquí realmente no hizo mucho.
-
-![PUNTOS DE RUPTURA](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR3/ERROR3.png)
-
-![VARIABLES DEPURACIÓN](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR3/VARIABLES.png)
-
-Como vemos, la cosa es que se le asigna la id siguiendo el mismo tratamiento que en los eventos, es decir, con la fecha. Para esto, simplemente vamos a hacer una variable contador que le vaya incrementando a las tareas su id y así lo podemos seleccionar por su id.
-
-![CAPTURA SOLUCION 1](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR3/SOLUCION.png)
-
-Creamos una variable contador en companion
-
-![CAPTURA SOLUCION 2](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR3/SOLUCION_2.png)
-
-A las id se le sumará ese contador
-
-![CAPTURA SOLUCION 3](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR3/SOLUCION_3.png)
-
-Vemos que ahora se le asigna perfectamente y además el log nos dice que se ha creado la subtarea en la tarea con id 11 con éxito
-
-## Error 4: Subtareas en fichero de texto
-
-- Este error lo soluciona: Angel
-
-Este fue el problema que nos percatamos de primeras, y es que teníamos en mente empezar con este error pero nos surgieron algunos otros por el camino. La cosa es que nos fijamos que en el fichero de texto no se nos almacenaban las subtareas de las tareas, lo que hacia que la creación de subtareas solo se pudiera manejar en memoria y no con los ficheros de texto, que es como decidimos que funcionará nuestro programa por darle un poco más el toque de realismo de cerrar y tener los mismos datos.
-
-Para empezar, volvimos a poner nuestros famosos puntos de ruptura para depurar
-
-![PUNTO DE RUPTURA](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR4/PUNTOS_RUPTURA.png)
-
-En cuanto lo pusimos, detectamos el problema enseguida ya que al final, pusimos el punto de ruptura en el método que sabíamos que iba a ser el que daba problemas. Como vemos, en las variables no se está utilizando correctamente la deserialización de tareas, de hecho, la variable de subtareas sale gris en el ide porque no se usa, es decir, que no estabamos almacenandolas porque se nos pasó de largo (también mas que nada porque esta era una tarea más costosa y decidimos dejarla para finales pero se nos pasó por completo y por eso sabíamos que este iba a ser un error que solucionar en este ejercicio nuevo)
-
-![ERROR LOCALIZADO](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR4/ERROR_DETECTADO.png)
-
-
-Al final, para este error, lo único que había que hacer era añadirle más cosas al código, era el más fácil de detectar, pero a la vez, el más dificil de solucionar porque había que trastear un poco más
-
-![MUESTRA DE SUBTAREAS EN FICHERO](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/main/IMAGENES/ERROR4/ARREGLO.png)
-
-## Conclusiones y Aprendizajes
-1. **Importancia de la Validación**:
-   - La falta de validaciones adecuadas permitió la aparición de un comportamiento no esperado. Implementar restricciones en los puntos críticos del código es esencial.
-
-2. **Ventajas del Logging Centralizado**:
-   - Usar un logger en una clase central permitió monitorear todo el programa sin necesidad de agregar loggers en cada clase individualmente.
-
-3. **Depuración Eficiente**:
-   - El uso de puntos de interrupción y la inspección de variables fue clave para identificar el origen del problema.
-   - La combinación de depuración paso a paso y logging permitió solucionar el error rápidamente.
-
-4. **Mantenimiento del Código**:
-   - Al eliminar la posibilidad de jerarquías infinitas de subtareas, se mejoró la estabilidad y mantenibilidad del sistema.
-
-También hemos visto que cada vez que se intenta arreglar un error, se generan otros 200 más, haciendonos ver la importancia de estas herramientas dadas en el temario para poder afrontar todos estos problemas, porque realmente solo teníamos dos errores que queríamos solucionar, pero de ahí encontramos otros dos.
+5. **[WildcardImport]**  
+_Ejemplo:_ `AccesoDatos.* is a wildcard import. Replace it with fully qualified imports.`  
+**Descripción detallada:**  
+Usar imports con comodines (`*`) importa todas las clases de un paquete, lo que puede provocar conflictos de nombres si diferentes paquetes contienen clases con el mismo nombre. Además, dificulta saber qué clases se están utilizando realmente en el archivo, reduciendo la claridad y el control sobre las dependencias. Es mejor importar solo las clases necesarias de forma explícita.
+**SOLUCIÓN:**

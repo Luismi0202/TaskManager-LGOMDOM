@@ -100,3 +100,9 @@ IMPORTS DESPUES:
 
 ENLACE AL COMMIT DE ERROR 5:
 [ENLACE AL COMMIT]()
+
+# DETALLE IMPORTANTE
+
+En cada uno de estos cambios he ido probando el programa para comprobar que seguía funcionando. La captura que voy a adjuntar es la del programa después de hacerle todos los cambios, como se ve, sigue funcionando correctamente.
+
+[CAPTURA PRUEBA]()

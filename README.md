@@ -125,6 +125,16 @@ IMPORTS DESPUES:
 ENLACE AL COMMIT DE ERROR 5:
 [ENLACE AL COMMIT](https://github.com/Luismi0202/TaskManager-LGOMDOM/commit/731f6997cf594ba89a2a78f820f48d474837b67a)
 
+
+# CAMBIO DE CONFIG POR DEFECTO EN DETEKT
+He modificado una de las opciones de configuración de este de analizador de errores. Para eso pues me metí en el gradle como vimos antes y esta vez le añadí una línea más a esa configuración, esa linea es la de baseline, que hará que los errores que se hayan detectado ya en una de las pasadas no vuelvan a salir, sino que se ignoran, esto es útil para detectar los nuevos errores que se produzcan en el código.
+
+[LINEA AÑADIDA]()
+
+[COMPROBACION]()
+
+En la segunda imagen se ve la comprobación y como se puede apreciar, ya no es como antes que toda la terminal estaba llena de muchas líneas de errores tal es así que no me cabían ni en la captura, sino que me sale un solo error y ya se ve el final de la terminal.
+
 # DETALLE IMPORTANTE
 
 En cada uno de estos cambios he ido probando el programa para comprobar que seguía funcionando. La captura que voy a adjuntar es la del programa después de hacerle todos los cambios, como se ve, sigue funcionando correctamente.

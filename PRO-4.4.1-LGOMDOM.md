@@ -12,7 +12,7 @@ https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/782fe362102cc2aa7dd7c43d5
 
 https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/782fe362102cc2aa7dd7c43d5ad7707da301339c/MEJORA-TASK/src/main/kotlin/AccesoDatos/RepoActividades.kt#L1-L115
 
-Ahora que he enseñado las clases que he documentado, es hora de pasar a la acción y ejecutar el comando para que nos haga la estructura de la carpeta /doc y nos ponga ahí dentro nuestras páginas html con la documentación de nuestro código.
+Ahora que he enseñado las clases que he documentado, es hora de pasar a la acción y ejecutar el comando para que nos haga la estructura de la carpeta dokka que luego moveremos a doc y nos ponga ahí dentro nuestras páginas html con la documentación de nuestro código.
 
 ![EJECUTANDO COMANDO](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/4.4.1-LGOMDOM/IMAGENES/BUILD_DOKKA.png)
 

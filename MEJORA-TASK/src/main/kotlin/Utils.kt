@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import Dominio.*
+import java.io.IOException
 
 object Utils {
     private val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
@@ -106,7 +107,7 @@ object Utils {
                 println("El archivo no existe: $ruta")
                 emptyList()
             }
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             println("Error al leer el archivo: ${e.message}")
             emptyList()
         }

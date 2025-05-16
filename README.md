@@ -51,8 +51,20 @@ ENLACE AL COMMIT (PD: ESTE COMMIT COMPARTE LOS 2 PRIMEROS ERRORES PORQUE SE ME O
 3. **[TooGenericExceptionCaught]**  
 _Ejemplo:_ `The caught exception is too generic. Prefer catching specific exceptions...`  
 **Descripción detallada:**  
-Capturar excepciones genéricas como `Exception` o `Throwable` puede ocultar errores inesperados y hacer que el código ignore problemas graves o difíciles de detectar. Además, dificulta el diagnóstico de fallos, ya que se pierde información sobre el tipo de error real. Es mejor capturar solo las excepciones que realmente se esperan y pueden manejarse de forma segura.
+Capturar excepciones genéricas como `Exception` o `Throwable` puede ocultar errores inesperados y hacer que el código ignore problemas graves o difíciles de detectar. Además, dificulta el diagnóstico de fallos, ya que se pierde información sobre el tipo de error real. Es mejor capturar solo las excepciones que realmente se esperan y pueden manejarse de forma segura. También he de decir que yo lo que suelo hacer es tirar un Exception pero siempre hago yo los throws de manera que siempre acabo detallando porque es el error solo que meto todo en el mismo catch, realmente no considero que sea algo tan grave porque son las formas de programar de cada uno, pero igualmente, vamos a solucionar un fallo en uno de estos casos.
 **SOLUCIÓN:**
+Especificar la excepción en vez de usar una excepción genérica Exception para todos los errores.
+Voy a coger de ejemplo la función de leer el archivo que se encuentra en el objeto Utils, esa función es bastante intuitiva saber que hace ya que como bien dice el nombre, lo que hará será leer la ruta que le pasemos y devolvernosla en forma de código, es decir, lee un fichero y si deserializar esa información de alguna forma, podemos hacerlo.
+Como bien dije antes, suelo tirar excepciones globales por dos cosas, una porque las suelo controlar yo pero es que también hay muchos errores que pueden darte las cosas, no puedo saber todos los errores que hay ya que muchos paquetes como el de leer archivos genera los suyos propios, en este caso, generaba un error de entrada y salida, que en verdad se puede mirar fácil investigando pero al final te ahorras más tiempo poniendo el exception y luego refactorizandolo dándonos cuenta gracias a detekt.
+
+FUNCION ANTES (ERROR EXCEPTION GLOBAL):
+[FUNCION ANTES]()
+
+FUNCION DESPUES (ERROR EXCEPTION ESPECIFICO DE ENTRADA Y SALIDA IOEXCEPTION):
+[FUNCION DESPUES]()
+
+ENLACE AL COMMIT DE ERROR 3:
+[ENLACE AL COMMIT]()
 
 4. **[PackageNaming]**  
 _Ejemplo:_ `Package name should match the pattern: [a-z]+(.[a-z][A-Za-z0-9])`  

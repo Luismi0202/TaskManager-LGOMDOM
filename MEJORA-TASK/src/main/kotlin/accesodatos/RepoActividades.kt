@@ -1,10 +1,10 @@
-package AccesoDatos
+package accesodatos
 
-import Dominio.Actividad
-import Dominio.EstadoTarea
-import Dominio.Evento
-import Dominio.Tarea
-import Servicios.ControlDeHistorial
+import dominio.Actividad
+import dominio.EstadoTarea
+import dominio.Evento
+import dominio.Tarea
+import servicios.ControlDeHistorial
 import java.io.File
 import java.nio.file.Paths
 

@@ -1,9 +1,8 @@
-package Servicios
+package servicios
 
-import AccesoDatos.*
-import Dominio.*
-import Presentacion.*
-import org.slf4j.Logger
+import accesodatos.*
+import dominio.*
+import presentacion.*
 import org.slf4j.LoggerFactory
 
 import java.time.DayOfWeek

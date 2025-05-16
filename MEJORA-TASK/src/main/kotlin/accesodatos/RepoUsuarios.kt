@@ -1,5 +1,5 @@
-package AccesoDatos
-import Dominio.Usuario
+package accesodatos
+import dominio.Usuario
 import java.nio.file.Paths
 
 class RepoUsuarios(

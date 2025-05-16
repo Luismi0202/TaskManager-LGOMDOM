@@ -71,9 +71,19 @@ _Ejemplo:_ `Package name should match the pattern: [a-z]+(.[a-z][A-Za-z0-9])`
 **Descripción detallada:**  
 Los nombres de los paquetes en Kotlin deben estar en minúsculas y seguir un formato específico (por ejemplo, `com.ejemplo.proyecto`). No seguir esta convención puede causar problemas de compatibilidad, dificultar la búsqueda de clases y afectar la organización del proyecto. Además, algunos sistemas de archivos pueden ser sensibles a mayúsculas/minúsculas, lo que puede provocar errores al compilar o ejecutar el proyecto en diferentes entornos.
 **SOLUCIÓN:**
+Este error es increíblemente tonto pero no sé si es más tonto el error o yo. Como se aprecia en la primera imágen, tenía TODOS los paquetes con la primera en mayúscula, y esto en kotlin la regla es que los paquetes deben de ir siempre en minúsculas y las clases son las que tienen la primera inicial en mayúscula. Vamos que lo único que hay que hacer es refactorizar y renombrar esos package para poner todas las letras primeras en minúsculas.
+
+PAQUETES ANTES
+[PAQUETES ANTES]()
+
+PAQUETES DESPUES
+[PAQUETES DESPUES]()
+
+ENLACE AL COMMIT DE ERROR 4:
+[ENLACE AL COMMIT]()
 
 5. **[WildcardImport]**  
-_Ejemplo:_ `AccesoDatos.* is a wildcard import. Replace it with fully qualified imports.`  
+_Ejemplo:_ `accesodatos.* is a wildcard import. Replace it with fully qualified imports.`  
 **Descripción detallada:**  
 Usar imports con comodines (`*`) importa todas las clases de un paquete, lo que puede provocar conflictos de nombres si diferentes paquetes contienen clases con el mismo nombre. Además, dificulta saber qué clases se están utilizando realmente en el archivo, reduciendo la claridad y el control sobre las dependencias. Es mejor importar solo las clases necesarias de forma explícita.
 **SOLUCIÓN:**

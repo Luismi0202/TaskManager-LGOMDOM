@@ -1,7 +1,7 @@
-package Presentacion
-import AccesoDatos.RepoActividades
-import AccesoDatos.RepoUsuarios
-import Dominio.Actividad
+package presentacion
+import accesodatos.RepoActividades
+import accesodatos.RepoUsuarios
+import dominio.Actividad
 
 interface Consola {
     fun mostrarMenu()

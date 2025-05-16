@@ -3,35 +3,35 @@
 **REVISIÓN DEL CÓDIGO**
 Para usar el inspeccionador de código del IDE, hay que darle click derecho a la carpeta src (es decir, la carpeta del contenido de nuestro módulo del proyecto) y ahí se le da a "Analyze" (analizar si lo tienes en español yo es que lo tengo en inglés) y luego se le da a la parte de inspeccionar código. Se pone como alcance todo el proyecto y se le da a aceptar. Una vez termine, saldrán todos los avisos y sugerencias de refactorización como se ve en las imágenes.
 
-![PASOS A SEGUIR1]()
+![PASOS A SEGUIR1](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/PASOS.png)
 
-![PASOS A SEGUIR2]()
+![PASOS A SEGUIR2](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/PASOS2.png)
 
 Los resultados son los siguientes:
 
-![RESULTADOS]()
+![RESULTADOS](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/RESULTADOS.png)
 
 Vemos que hay 5 tipos de errores, en la imagen se pueden apreciar los "probable bugs", que es código que probablemente pueda dar errores (suele pasar sobre todo con llamadas a nulos), "redundant constructs", que como bien dice el nombre, son constructores que ya se han escrito y que lo estamos volviendo a usar, "style issues", que son errores que hace que nuestro código sea más dificil de leer o también puede ser que hay convenciones de kotlin que no estamos siguiendo, "grammar", que son errores de ortografía y los errores "typo", que son errores mal escritos en los identificadores, comentarios o cadenas de texto (vamos como los grammar pero en esas 3 cosas en concreto). Dejo aquí capturas de un error concreto para cada tipo:
 
 -Probable bugs
 
-![ERROR1]()
+![ERROR1](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/ERROR1.png)
 
 -Redundant constructs
 
-![ERROR2]()
+![ERROR2](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/ERROR2.png)
 
 -Style issues
 
-![ERROR3]()
+![ERROR3](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/ERROR3.png)
 
 -Grammar
 
-![ERROR4]()
+![ERROR4](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/ERROR4.png)
 
 -Typo 
 
-![ERROR5]()
+![ERROR5](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/ERROR5.png)
 
 **APLICACIÓN DE REFACTORIZACIONES** 
 
@@ -40,10 +40,10 @@ Vemos que hay 5 tipos de errores, en la imagen se pueden apreciar los "probable 
 Haré esta refactorización en el RepoUsuarios dentro del método cargar usuarios. Esta refactorización extrae la lógica de deseralización de usuario a un método privado, por ejemplo, deserializarYAgregarUsuario, aunque el IDE te lo crea con el nombre extracted.
 
 ANTES DE REFACT/ PROCESO REFACT
-![ANTES DE REFACT]()
+![ANTES DE REFACT](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/REFACT1.png)
 
 DESPUES DE REFACT (AQUÍ LO DEL UTILS YA NO HARÍA FALTA PORQUE SE ME ESTÁ AÑADIENDO SOLO)
-![DESPUES DE REFACT]()
+![DESPUES DE REFACT](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/REFACT2.png)
 
 2: Introducir parámetro objeto
 
@@ -51,11 +51,11 @@ Esto lo haré en evento.kt en el constructor secundarios que recibe muchos pará
 
 ANTES DE REFACT
 
-![ANTES DE REFACT]()
+![ANTES DE REFACT](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/REFACT3.png)
 
 DESPUES DE REFACT
 
-![DESPUES DE REFACT]()
+![DESPUES DE REFACT](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/REFACT4.png)
 
 **NOTA: Este lo he refactorizado usando el atajo control + alt + shift + t y luego le das a introduce parameter object y te pedirá el nombre de la clase para agrupar los parámetros y tú mismo le puedes dar el nombre.**
 
@@ -66,15 +66,27 @@ Para la refactorización automática en este caso simplemente me he puesto encim
 
 ANTES DE REFACT:
 
-![ANTES DE REFACT]()
+![ANTES DE REFACT](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/REFACT5.png)
 
 DESPUES DE REFACT
 
-![DESPUES DE REFACT]()
+![DESPUES DE REFACT](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/REFACT6.png)
 
 **Desarrollo de pruebas**
 
 Como hice esta rama apartir de la del main y no de la de pruebas unitarias, pues no tenía las pruebas unitarias anteriores pero de todas formas, esa era de solo una clase y no me venía también,a demas de que ya no se pide con DescribeSpec si no con JUnit. Lo que he hecho ha sido hacer 3 pruebas de 3 clases distintas antes de empezar a refactorizar y cuando he refactorizado realmente no he tenido que cambiar mucho esas pruebas ya que al final, son muy generales y estos cambios de refactorización realmente lo único que han hecho ha sido cambiar la forma en la que está el código para que este limpio pero funcionar funciona igual salvo la prueba de Evento, que tuve que crear un test con el EventoParams y otra sin (la primera vez fue sin porque lo tenia sin esa data class y luego se hizo así para quitar más parámetros). Dejo aquí el hyperlink de las 3 pruebas unitarias con JUnit que he realizado:
+
+https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/32f18a4d9efdf0f0045f5edbd13183b06f26f289/MEJORA-TASK/src/test/kotlin/EstadoTareaTest.kt#L1-L15
+
+https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/32f18a4d9efdf0f0045f5edbd13183b06f26f289/MEJORA-TASK/src/test/kotlin/EventoTest.kt#L1-L34
+
+https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/32f18a4d9efdf0f0045f5edbd13183b06f26f289/MEJORA-TASK/src/test/kotlin/RepoUsuariosTest.kt#L1-L27
+
+Para implementar JUnit, hice lo mismo que se hizo en el primer ejercicio con DescribeSpec, pero esta vez en el gradle se implementará JUnit
+
+![CAPTURA IMPLEMENTANDO JUNIT](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/P4.3.2-LGOMDOM/IMAGENES/CODE_SMELL/TEST_JUNIT.png)
+
+Luego para ejecutar las pruebas pues tendremos las mismas formas, o ponemos ./gradlew test (que por eso en el gradle ponemos que los test se harán con JUnit en task.test) o usamos kotest que es bastante más cómodo ya que es como ejecutar un punto de entrada main (te sale el botón de ejecutar en cada test que le hagas)
 
 # RESPUESTA A LAS PREGUNTAS
 
@@ -89,6 +101,8 @@ Refactorizaciones he aplicado la de renombrar, introducir parámetros objetos y 
 **1.b Teniendo en cuenta aquella funcionalidad que tiene pruebas unitarias, selecciona un patrón de refactorización de los que has aplicado y que están cubierto por los test unitarios. ¿Porque mejora o no mejora tu código? Asegurate de poner enlaces a tu código**
 
 Apliqué el patrón de introducción parámetro objeto en la clase de Evento para así agrupar varios parámetros en un solo objeto y que el código quede más limpio y además, se pueden meter más parámetros de forma más sencilla. Dejo aquí el hiperenlace al código (otra vez pero bueno dejo constancia en donde es necesario)
+
+https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/32f18a4d9efdf0f0045f5edbd13183b06f26f289/MEJORA-TASK/src/test/kotlin/EventoTest.kt#L1-L34
 
 [2]  
 

@@ -48,10 +48,10 @@ https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/ed4ba47d63036d0c450d08029
 
 Me instalé un plugin llamado kotest que hace que las pruebas las puedas realizar desde la propia clase sin necesidad de ir a terminal y poner ./gradlew test, si no que tan solo le damos al botón de ejecutar y podemos incluso ir prueba a prueba comprobando (lo cual me ha venido perfecto para ir controlando aquellas pruebas que daban fallo). Vamos, al final es como ese triangulito verde que nos sale en el main para que podamos ejecutar el programa sin tener que hacerlo en terminal
 
-![Foto de lo que me refiero](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/pruebas-unitarias/img/KOTEST_EJECUTADOS.png)
+![Foto de lo que me refiero](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/pruebas-unitarias/img/KOTEST_clase.png)
 
 Cuando probamos las pruebas todas a la vez, vemos que todas se ejecutan correctamente (fui probando poco a poco hasta poder dar con todas correctas pero tuve muchos fallos por el camino como los que mencioné anteriormente por no controlar errores, hacer mal castings de las listas o por no llamar a todas las clases que hacían falta en el método a la hora de hacer la prueba).
 
-![Foto de las pruebas ejecutadas](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/pruebas-unitarias/img/KOTEST_clase.png)
+![Foto de las pruebas ejecutadas](https://github.com/Luismi0202/TaskManager-LGOMDOM/blob/pruebas-unitarias/img/KOTEST_EJECUTADOS.png)
 
 Como vemos, pasa 8/8 de los tests (es decir, todos) y tarda 623 milisegundos en hacer todas las pruebas.

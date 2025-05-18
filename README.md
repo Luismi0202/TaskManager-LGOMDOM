@@ -1,4 +1,4 @@
-Para esta actividad, elegiré el servicio `ActividadService` de tu proyecto. Este servicio gestiona diversas operaciones relacionadas con actividades, como agregar subtareas, cambiar el estado de tareas y filtrar actividades. A continuación, estructuraré los pasos para cumplir con los objetivos de la actividad.
+Para esta actividad, elegiré el servicio `ActividadService` de tu proyecto. Este servicio gestiona diversas operaciones relacionadas con actividades, como agregar subtareas, cambiar el estado de tareas y filtrar actividades.
 
 ### Plan para Diseñar y Ejecutar Pruebas Unitarias para `ActividadService`
 
